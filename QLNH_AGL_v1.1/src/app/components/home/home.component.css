@@ -1,0 +1,9 @@
+*:not(i) {
+  font-family: arial;
+}
+
+@media (min-width: 1200px) {
+  #card-body {
+    padding-bottom: 27% !important;
+  }
+}

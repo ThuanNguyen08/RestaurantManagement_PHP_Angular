@@ -1,0 +1,141 @@
+<div id="container">
+    <div class="context-food-category">
+        <div class="context-category" style="background-color: white; border-top-left-radius: 15px;">
+            <a tabindex="0" class="category" *ngFor="let item of listDmFood" [ngClass]="{'selected': item.isSelected}"
+                (click)="getFood(item)">
+                {{ item.CategoryName }}
+            </a>
+        </div>
+        <div class="context-food" style="background-color: white; border-bottom-left-radius:15px">
+            <div>
+                <a tabindex="0" *ngFor="let item of listFood" (click)="addBill(item)">
+                    <div style="width: 100%; min-height: 70%; display: flex; justify-content: center; align-items: center; padding: 3px !important;">
+                        <img style="width: 100%; height: 100%; border-radius: 15px; object-fit: cover;" src="assets/img/{{item.AvtFood}}" alt="{{item.FoodName}}">
+                    </div>
+                    <div style="width: 100%; height: 30%; display: flex; justify-content: center; padding: 0px !important;">
+                        <span style="padding-top: 0%;">{{item.FoodName}}</span>
+                    </div>
+                    <span style="padding-top: 0%;">{{item.Price|number: '1.0-2'}}đ</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="context-tablename-listitem"
+        style="background-color: white; border-bottom-right-radius:15px;border-top-right-radius:15px">
+        <div class="context-tablename">
+            <h6 style="font-weight: bold; font-size: 3vh;">Gọi món cho bàn {{TableName}}</h6>
+            <div style="color: red; font-family: arial;">{{thongbao}}</div>
+            <div style="display: flex;">
+                <span style="width:25%; padding-top: 1%; font-weight: bold;">Tên khách hàng:</span><input type="text"
+                    name="CustomerName" #CustomerName="ngModel" [(ngModel)]="bill.CustomerName"
+                    placeholder="Tên khách hàng..." 
+                    style="height: 4vh;width: 60%; outline: none; margin: 1% 0px; background-color: transparent; padding: 0px 1% !important;">
+            </div>
+            <div style="display: flex;">
+                <span style="width:25%; padding-top: 1%;font-weight: bold;">Số điện thoại:</span><input type="number"
+                    name="SDT" #SDT="ngModel" [(ngModel)]="bill.SDT" placeholder="Số điện thoại..."
+                    style="height: 4vh;width: 60%; outline: none; margin: 1% 0px;background-color: transparent; padding: 0px 1% !important;">
+            </div>
+            <div style="display: flex;">
+                <!-- Tiền nhận -->
+                <span style="width: 25%; padding-top: 1%; font-weight: bold;">Tiền khách trả:</span>
+                <input type="text" name="money" [(ngModel)]="money" (input)="payMoney($event)"
+                    style="height: 4vh; width: 20%; outline: none; margin: 1% 0px; background-color: transparent; padding: 0px 1% !important;">
+
+                <!-- Tiền trả -->
+                <span style="width: 20%; padding-top: 1%;font-weight: bold; text-align: center;">Cần thối:</span><input
+                    type="text" value="{{pay| number:'1.0-2' }}đ" readonly
+                    style="height: 4vh;width: 20%; outline: none; margin: 1% 0px;background-color: transparent; padding: 0px 1% !important;">
+            </div>
+        </div>
+        <div class="context-listitem">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Món ăn</th>
+                        <th>Giá tiền</th>
+                        <th>Số lượng</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listItemBill">
+                        <td style="text-align: left; width: 35%; padding-left: 1.5%;">{{item.FoodName}}</td>
+                        <td style="text-align: center; width: 20%;">{{item.Price | number:'1.0-2' }}đ</td>
+                        <td style="text-align: center; width: 20%;" class="td-quantity">
+                            <div class="quantity-controls">
+                                <button (click)="minusItem(item)" style="border-radius: 50%; display: flex; justify-content: center; align-items: center;">-</button>
+                                {{item.Quantity}}
+                                <button (click)="plushItem(item)" style="border-radius: 50%; display: flex; justify-content: center; align-items: center;">+</button>
+                            </div>
+                        </td>
+                        <td style="text-align: center;width: 25%;">{{item.Quantity * item.Price | number:'1.0-2'}}đ
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; width: 95%; padding-top: 2%;">
+            <div style="width: 50%; padding-left: 2%; font-weight: bold; padding-top: 2%;">Tổng tiền: {{totalAmount | number:'1.0-2'}}</div>
+            <div style="width: 50%; display: flex; justify-content: end;"><button class="btn btn-primary" style="font-size: 13px;" (click)="showDialog()">Thanh
+                    toán</button></div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog" [hidden]="!show">
+    <div class="context-dialog">
+        <div style="width: 100%; display: flex; justify-content: end;"><button style="padding: 1px 8px !important;" class="btn btn-secondary" (click)="showDialog()">x</button></div>
+        <h6 style="font-weight: bold;">Nhà hàng NEW WIND RESTAURANT</h6>
+        <p>Địa chỉ: 68/3 Nguyễn Thái Học</p>
+        <p>Xin cảm ơn quý khách!!!</p>
+        <p>Bàn {{TableName}}</p>
+        <div style="display: flex;">
+            <span style="width: 32%; padding-top: 1.5%; font-weight: bold;">Tên khách hàng:</span><input type="text"
+                [value]="bill.CustomerName" readonly style="width: 69%; border: none;">
+        </div>
+        <div style="display: flex;">
+            <span style="width: 32%; padding-top: 1.5%; font-weight: bold;">Số điện thoại:</span><input type="text"
+                [value]="bill.SDT" readonly style="width: 69%; border: none;">
+        </div>
+        <div style="display: flex;">
+            <span style="width: 32%; padding-top: 1.5%; font-weight: bold;">Thời gian:</span><input type="text"
+                value={{formatTime()}} readonly style="width: 69%; border: none;">
+        </div>
+        <div style="display: flex;">
+            <span style="width: 32%; padding-top: 1.5%; font-weight: bold;">Nhân viên:</span><input type="text"
+                value={{nameUser}} readonly style="width: 69%; border: none;">
+        </div>
+        <div class="context-listitem" style="height: 40vh;">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Món ăn</th>
+                        <th>Giá tiền</th>
+                        <th>Số lượng</th>
+                        <th>Tổng tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of listItemBill">
+                        <td style="text-align: left; width: 35%; padding-left: 1.5%;">{{item.FoodName}}</td>
+                        <td style="text-align: center; width: 20%;">{{item.Price | number:'1.0-2' }}đ</td>
+                        <td style="text-align: center; width: 20%;">
+                            <div>
+                                {{item.Quantity}}
+                            </div>
+                        </td>
+                        <td style="text-align: center;width: 25%;">{{item.Quantity * item.Price | number:'1.0-2'}}đ
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="display: flex; width: 95%; padding-top: 2%;">
+            <div style="width: 50%; padding-left: 2%; font-weight: bold;">Tổng tiền: {{totalAmount | number:'1.0-2'}}
+            </div>
+            <div style="width: 50%; display: flex; justify-content: end;"><button style="font-size: 13px;" class="btn btn-primary" (click)="saveBillToSQL()">Xác
+                    nhận</button></div>
+        </div>
+    </div>
+</div>

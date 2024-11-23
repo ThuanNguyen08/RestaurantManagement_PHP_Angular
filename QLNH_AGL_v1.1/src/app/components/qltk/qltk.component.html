@@ -1,0 +1,138 @@
+<div>
+  <h2>Danh sách tài khoản</h2>
+  <div style="width: 400px" class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Nhập tên người dùng ">
+    <button class="btn btn-primary" (click)="searchAccount(searchTerm)">Tìm kiếm</button>
+  </div>
+  <table class="table table-bordered table-hover centered-table" style="color: black;">
+    <thead class="table-primary" style="text-align: center;">
+      <tr>
+        <th>Họ và tên</th>
+        <th>Chức vụ</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let account of accounts" style="text-align: center;">
+        <td>{{ account.FullName }}</td>
+        <td>{{ getAccountType(account.AccountType) }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="deleteAccount(account.AccountID)"
+            style="margin-right: 2%; padding: 2px 8px !important;"><i class="fa fa-trash"></i></button>
+          <button class="btn btn-primary btn-sm" (click)="viewDetails(account)" style="padding: 2px 5px !important;"><i
+              class="fa fa-eye"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Button để mở modal thêm tài khoản mới -->
+  <button class="btn btn-primary" (click)="showModal = true">Thêm tài khoản mới</button>
+
+  <!-- Modal thêm tài khoản mới -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm tài khoản mới</h5>
+          <button type="button" class="close" (click)="showModal = false">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Form để nhập thông tin tài khoản mới -->
+          <form (submit)="addAccount()">
+            <p>Username: <input [(ngModel)]="newAccount.Username" name="username" /></p>
+            <p>Password: <input [(ngModel)]="newAccount.Password" type="password" name="password" /></p>
+            <p for="accountType">Chức vụ:</p>
+            <select class="form-control" id="accountType" [(ngModel)]="newAccount.AccountType" name="AccountType">
+              <option [ngValue]="0">Quản lý</option>
+              <option [ngValue]="1">Nhân viên</option>
+            </select>
+            <p>Họ vè tên: <input [(ngModel)]="newAccount.FullName" name="fullName" /></p>
+            <p>Ngày sinh: <input [(ngModel)]="newAccount.BirthDay" type="date" name="birthDay" /></p>
+            <p for="sex">Giới tính:</p>
+            <select class="form-control" id="sex" [(ngModel)]="newAccount.Sex" name="sex">
+              <option [ngValue]="0">Nữ</option>
+              <option [ngValue]="1">Nam</option>
+            </select>
+            <p>Email: <input [(ngModel)]="newAccount.Email" name="email" /></p>
+            <p>PhoneNumber: <input [(ngModel)]="newAccount.PhoneNumber" name="phoneNumber" /></p>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Thêm tài khoản</button>
+              <button type="button" class="btn btn-secondary" (click)="showModal = false">Đóng</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal hiển thị chi tiết tài khoản -->
+  <div class="modal" *ngIf="showAccountDetailsModal && selectedAccount">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chi tiết tài khoản</h5>
+          <button type="button" class="close" (click)="closeAccountDetailsModal()">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Hiển thị thông tin chi tiết của tài khoản -->
+          <p><strong>Username:</strong> {{ selectedAccount.Username }}</p>
+          <p><strong>Họ và tên:</strong> {{ selectedAccount.FullName }}</p>
+          <p><strong>Chức vụ:</strong> {{ getAccountType(selectedAccount.AccountType) }}</p>
+          <p><strong>Ngày sinh:</strong> {{ selectedAccount.BirthDay | date }}</p>
+          <p><strong>Giới tính:</strong> {{ getSex(selectedAccount.Sex) }}</p>
+          <p><strong>Email:</strong> {{ selectedAccount.Email }}</p>
+          <p><strong>Phone Number:</strong> {{ selectedAccount.PhoneNumber }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="editAccount(selectedAccount)">Chỉnh sửa</button>
+          <button type="button" class="btn btn-secondary" (click)="closeAccountDetailsModal()">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal chỉnh sửa thông tin tài khoản -->
+  <div class="modal" *ngIf="showEditAccountModal && selectedAccount">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chỉnh sửa tài khoản</h5>
+          <button type="button" class="close" (click)="closeEditAccountModal()">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Form để chỉnh sửa thông tin tài khoản -->
+          <form (submit)="updateAccount(selectedAccount)">
+            <p for="accountType">Chức vụ:</p>
+            <select class="form-control" id="accountType" [(ngModel)]="selectedAccount.AccountType" name="AccountType">
+              <option [ngValue]="0">Quản lý</option>
+              <option [ngValue]="1">Nhân viên</option>
+            </select>
+            <p>Họ và tên: <input [(ngModel)]="selectedAccount.FullName" name="fullName" /></p>
+            <p>Ngày sinh: <input [(ngModel)]="selectedAccount.BirthDay" type="date" name="birthDay" /></p>
+            <p for="sex">Giới tính:</p>
+            <select class="form-control" id="sex" [(ngModel)]="selectedAccount.Sex" name="sex">
+              <option [ngValue]="0">Nữ</option>
+              <option [ngValue]="1">Nam</option>
+            </select>
+            <p>Email: <input [(ngModel)]="selectedAccount.Email" name="email" /></p>
+            <p>PhoneNumber: <input [(ngModel)]="selectedAccount.PhoneNumber" name="phoneNumber" /></p>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" (click)="updateAccount(selectedAccount)"
+            (click)="closeEditAccountModal()">Lưu thay đổi</button>
+          <button type="button" class="btn btn-secondary" (click)="closeEditAccountModal()">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

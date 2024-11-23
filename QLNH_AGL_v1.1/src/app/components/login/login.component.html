@@ -1,0 +1,35 @@
+<div class="main">
+    <section class="sign-in">
+        <div class="container">
+            <div class="signin-content" style="padding-bottom: 30px !important;">
+                <div class="signin-image">
+                    <figure><img src="assets/img/signin-image.jpg" alt="sing up image"></figure>
+                </div>
+
+                <div class="signin-form">
+                    <h2 class="form-title">Sign In</h2>
+                    <form (ngSubmit)="login(taikhoan)" class="register-form" id="login-form">
+                        <div style="color: red; font-family: arial;">{{thongbao}}</div>
+                        <div class="form-group">
+                            <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                            <input type="text" name="Username" #Username="ngModel" [(ngModel)]="taikhoan.Username" id="your_name"
+                                placeholder="Nhập tài khoản..."/>
+                        </div>
+                        <div class="form-group">
+                            <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                            <input type="password" name="Password" id="your_pass" placeholder="Nhập mật khẩu..."
+                                [(ngModel)]="taikhoan.Password" #Password="ngModel">
+                        </div>
+                        <!-- <div class="form-group">
+                        <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                        <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                    </div> -->
+                        <div class="form-group form-button">
+                            <input type="submit" name="signin" id="signin" class="form-submit" value="Login" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

@@ -1,0 +1,17 @@
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+a:hover {
+    cursor: pointer;
+}

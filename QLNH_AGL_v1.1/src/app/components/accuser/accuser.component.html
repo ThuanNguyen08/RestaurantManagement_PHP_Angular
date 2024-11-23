@@ -1,0 +1,20 @@
+<div class="form-container">
+    <div *ngIf="accountDetail; else errorTemplate" class="account-details">
+      <h2>Thông tin chi tiết</h2>
+      <form>
+        <p><strong>Họ và tên:</strong> {{ accountDetail.FullName }}</p>
+        <p><strong>Username:</strong> {{ accountDetail.Username }}</p>
+        <p><strong>Email:</strong> {{ accountDetail.Email }}</p>
+        <p><strong>Phone Number:</strong> {{ accountDetail.PhoneNumber }}</p>
+        <p><strong>Ngày sinh:</strong> {{ accountDetail.BirthDay | date }}</p>
+        <p><strong>Giới tính:</strong> {{ getSex(accountDetail.Sex) }}</p>
+        <p><strong>Chức vụ:</strong> {{ getAccountType(accountDetail.AccountType) }}</p>
+        <button (click)="goBack()" class="back-button">Quay lại</button>
+      </form>
+    </div>
+  
+    <ng-template #errorTemplate>
+      <p>{{ errorMessage }}</p>
+    </ng-template>
+  </div>
+  

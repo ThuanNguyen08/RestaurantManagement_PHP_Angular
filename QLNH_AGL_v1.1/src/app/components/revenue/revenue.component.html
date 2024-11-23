@@ -1,0 +1,88 @@
+<style>
+    *:not(i) {
+        font-family: arial;
+    }
+</style>
+<div class="container">
+    <h2 class="my-4">Thống kê doanh thu</h2>
+
+    <div class="mb-4">
+        <input [(ngModel)]="searchParams.customer" placeholder="Tìm kiếm theo khách hàng" class="form-control" />
+        <input [(ngModel)]="searchParams.phone" placeholder="Tìm kiếm theo số điện thoại" class="form-control mt-2" />
+        <input [(ngModel)]="searchParams.table" placeholder="Tìm kiếm theo số bàn" class="form-control mt-2" />
+        <input [(ngModel)]="searchParams.dateIn" type="date" placeholder="Tìm kiếm theo thời gian vào"
+            class="form-control mt-2" />
+        <input [(ngModel)]="searchParams.dateOut" type="date" placeholder="Tìm kiếm theo thời gian ra"
+            class="form-control mt-2" />
+        <button (click)="search()" class="btn btn-primary mt-2">Tìm kiếm</button>
+        <button (click)="resetSearch()" class="btn btn-secondary mt-2 ml-2">Hiển thị tất cả</button>
+    </div>
+
+    <table class="table table-bordered" style="color: black;">
+        <thead>
+            <tr style="text-align: center; background-color: gray; color: white;">
+                <th>ID</th>
+                <th>Bàn</th>
+                <th>Khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Thời gian</th>
+                <th>Tổng tiền</th>
+                <th>ID nhân viên</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let revenue of revenues" style="text-align: center;">
+                <td>{{ revenue.BillID }}</td>
+                <td>{{ revenue.TableName }}</td>
+                <td>{{ revenue.CustomerName }}</td>
+                <td>{{ revenue.SDT }}</td>
+                <td>{{ revenue.BillDate }}</td>
+                <td>{{ revenue.TotalAmount | currency:'VND' }}</td>
+                <td>{{ revenue.UserInfoID }}</td>
+                <td>
+                    <button class="btn btn-primary" (click)="viewDetails(revenue)" style="margin-right: 4%; padding: 2px 5px !important;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteRevenue(revenue.BillID)" style="padding: 2px 7px !important;">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" [class.disabled]="page === 1">
+                <a class="page-link" (click)="page > 1 && (page = page - 1) && loadRevenues()">Previous</a>
+            </li>
+            <li class="page-item" [class.disabled]="page * limit >= total">
+                <a class="page-link" (click)="page * limit < total && (page = page + 1) && loadRevenues()">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Modal xem chi tiết -->
+<div class="modal fade" id="revenueDetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chi tiết doanh thu</h5>
+            </div>
+            <div class="modal-body">
+                <p><strong>ID:</strong> {{ selectedRevenue?.BillID }}</p>
+                <p><strong>Bàn:</strong> {{ selectedRevenue?.TableName }}</p>
+                <p><strong>Khách hàng:</strong> {{ selectedRevenue?.CustomerName }}</p>
+                <p><strong>Số điện thoại:</strong> {{ selectedRevenue?.SDT }}</p>
+                <p><strong>Thời gian:</strong> {{ selectedRevenue?.BillDate }}</p>
+                <p><strong>Tổng tiền:</strong> {{ selectedRevenue?.TotalAmount | number: '1.0-2'}}đ</p>
+                <p><strong>ID nhân viên:</strong> {{ selectedRevenue?.UserName }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

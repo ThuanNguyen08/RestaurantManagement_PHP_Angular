@@ -1,0 +1,81 @@
+<style>
+    *:not(i) {
+        font-family: arial;
+    }
+</style>
+<div class="container-fluid">
+    <h2 class="my-4">Quản lý danh mục</h2>
+
+    <!-- Form thêm danh mục món ăn mới -->
+    <div class="card mb-4">
+        <div class="card-header">
+            Thêm danh mục món ăn mới
+        </div>
+        <div class="card-body">
+            <form (submit)="addDMFood()">
+                <div class="form-group">
+                    <span for="dmFoodName">Tên danh mục</span>
+                    <input type="text" class="form-control" id="dmFoodName" [(ngModel)]="newDMFood.CategoryName"
+                        name="dmFoodName" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Danh sách danh mục món ăn -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Danh sách danh mục món ăn</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="color: black;">
+                    <thead>
+                        <tr style="background-color: rgb(196, 195, 195); color: black;">
+                            <th style="text-align: center;">ID</th>
+                            <th style="text-align: center;">Tên danh mục</th>
+                            <th style="text-align: center;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let dmFood of dmFoods">
+                            <td style="text-align: center;">{{ dmFood.DMFoodID }}</td>
+                            <td style="text-align: center;">{{ dmFood.CategoryName }}</td>
+                            <td style="text-align: center;">
+                                <button class="btn btn-sm btn-primary" (click)="editDMFood(dmFood)"><i class="fa fa-pen"></i></button>
+                                <button class="btn btn-sm btn-danger" style="margin-left: 1%;"
+                                    (click)="deleteDMFood(dmFood.DMFoodID)"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa danh mục món ăn -->
+    <div id="editDMFoodModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editDMFoodModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDMFoodModalLabel">Sửa danh mục món ăn</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form (submit)="saveChanges()">
+                        <div class="form-group">
+                            <span for="editDMFoodName">Tên danh mục</span>
+                            <input type="text" class="form-control" id="editDMFoodName"
+                                [(ngModel)]="editedDMFood.CategoryName" name="editDMFoodName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

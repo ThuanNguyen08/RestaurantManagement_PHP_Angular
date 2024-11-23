@@ -1,0 +1,44 @@
+{
+    "ListAccount": [
+        {
+            "AccountID": "1",
+            "Username": "LAT",
+            "AccountType": "1",
+            "FullName": "L\u00ea Anh T\u00fa1",
+            "BirthDay": "2003-10-11",
+            "Sex": "0",
+            "Email": "lat1@gmail.com",
+            "PhoneNumber": "190016101"
+        },
+        {
+            "AccountID": "2",
+            "Username": "admin",
+            "AccountType": "0",
+            "FullName": "Qu\u1ea3n Tr\u1ecb Vi\u00ean",
+            "BirthDay": "2024-06-06",
+            "Sex": "0",
+            "Email": "admin@gmail.com",
+            "PhoneNumber": "19001000"
+        },
+        {
+            "AccountID": "3",
+            "Username": "NVT",
+            "AccountType": "1",
+            "FullName": "Nguy\u1ec5n V\u0103n Tr\u01b0\u1eddng",
+            "BirthDay": "2003-01-01",
+            "Sex": "1",
+            "Email": "nvt@gmail.com",
+            "PhoneNumber": "12341234"
+        },
+        {
+            "AccountID": "72",
+            "Username": "123",
+            "AccountType": "0",
+            "FullName": "123",
+            "BirthDay": "1111-11-11",
+            "Sex": "0",
+            "Email": "cnttk44dhuynhthinhphat0690@gmaill.com",
+            "PhoneNumber": "1231233"
+        }
+    ]
+}

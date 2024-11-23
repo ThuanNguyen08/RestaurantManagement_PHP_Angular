@@ -1,0 +1,115 @@
+<div style="margin-bottom: 70px; padding-bottom: 2%;" class="container mt-4">
+    <h1 class="text-center">Danh sách bàn</h1>
+    <div class="text-end mb-3">
+      <button class="btn btn-primary" (click)="openModal()">Thêm bàn mới</button>
+    </div>
+  
+    <!-- Modal for adding new table -->
+    <div class="modal" [ngClass]="{'open': showModal}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm bàn mới</h5>
+            <button type="button" class="close" (click)="closeModal()">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="addTable()">
+              <div class="mb-3">
+                <p for="tableName" class="form-label">Tên bàn:</p>
+                <input type="text" class="form-control" id="tableName"  [(ngModel)]="newTableName" name="tableName" required>
+              </div>
+              <div class="mb-3">
+                <p for="tableStatus" class="form-label">Trạng thái:</p>
+                <select class="form-control" id="tableStatus" [(ngModel)]="newTableStatus" name="tableStatus" required>
+                  <option value="Trống">Trống</option>
+                  <option value="Có người">Có người</option>
+                </select>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Thêm</button>
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Đóng</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Table listing -->
+    <table class="table table-bordered table-hover centered-table" style="color: black;">
+      <thead class="table-primary">
+        <tr>
+          <th style="font-size: 16px;" class="text-center">Tên bàn</th>
+          <th style="font-size: 16px;" class="text-center">Trạng thái</th>
+          <th style="font-size: 16px;" class="text-center">Chức năng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let table of tables">
+          <td style="border-right: 0px !important" class="text-center">{{ table.TableName }}</td>
+          <td style="border-right: 0px !important; border-left: 0px !important;" class="text-center">{{ table.Status }}</td>
+          <td style="border-left: 0px !important; border-bottom: 0px !important;" class="text-center action-buttons">
+            <!-- Control action buttons here if needed -->
+            <button  class="btn btn-primary btn-sm" (click)="editTable(table)" [disabled]="table.Status === 'Có người'" >Đặt bàn</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteTableConfirmation(table)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" [ngClass]="{'open': showDeleteModal}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận xóa bàn</h5>
+            <button type="button" class="close" (click)="closeDeleteModal()">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa bàn "{{ selectedTable?.TableName }}" có trạng thái "{{ selectedTable?.Status }}"?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="deleteTable()">Xóa</button>
+            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Đóng</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal for updating table -->
+  <div class="modal" [ngClass]="{'open': showUpdateModal}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chỉnh sửa bàn</h5>
+          <button type="button" class="close" (click)="closeUpdateModal()">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="updateTable()">
+            <div class="mb-3">
+              <p for="tableName" class="form-label">Tên bàn:</p>
+              <input type="text" class="form-control" id="tableName" [(ngModel)]="selectedTable.TableName" name="tableName" required readonly>
+            </div>
+            <div class="mb-3">
+              <p for="tableStatus" class="form-label">Trạng thái:</p>
+              <select class="form-control" id="tableStatus" [(ngModel)]="selectedTable.Status" name="tableStatus" required>
+                <option value="Trống">Trống</option>
+                <option value="Có người">Có người</option>
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Lưu</button>
+              <button type="button" class="btn btn-secondary" (click)="closeUpdateModal()">Đóng</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
